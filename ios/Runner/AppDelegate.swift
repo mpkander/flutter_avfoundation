@@ -9,12 +9,16 @@ import Flutter
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
     
-    weak var registrar = self.registrar(forPlugin: "flutter_platform_camera.cameraView1")
+    let imagesHandler = ImagesHandler()
+    let imageStorage = ImageStorage(observerDelegate: imagesHandler)
     
-    let factory = FLTCameraViewFactory(withRegistrar: registrar!)
-    self.registrar(forPlugin: "flutter_platform_camera.cameraView")!.register(
-                factory,
-                withId: "flutter_platform_camera.cameraView")
+    weak var registrar = self.registrar(forPlugin: "flutter_platform_camera.cameraView")
+    let factory = FLTCameraViewFactory(withRegistrar: registrar!, imageStorage: imageStorage)
+    registrar!.register(factory, withId: "flutter_platform_camera.cameraView")
+    
+    let controller = window.rootViewController as! FlutterViewController
+    FlutterEventChannel(name: "flutter_platform_camera.image_storage_observer", binaryMessenger: controller.binaryMessenger)
+                .setStreamHandler(imagesHandler)
     
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

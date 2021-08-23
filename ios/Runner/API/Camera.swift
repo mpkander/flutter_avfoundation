@@ -12,9 +12,11 @@ import AVFoundation
 
 class FLTCameraViewFactory: NSObject, FlutterPlatformViewFactory {
     let registrar: FlutterPluginRegistrar
+    let imageStorage: ImageStorageProtocol
         
-    init(withRegistrar registrar: FlutterPluginRegistrar) {
+    init(withRegistrar registrar: FlutterPluginRegistrar, imageStorage: ImageStorageProtocol) {
         self.registrar = registrar
+        self.imageStorage = imageStorage
         super.init()
     }
 
@@ -23,7 +25,7 @@ class FLTCameraViewFactory: NSObject, FlutterPlatformViewFactory {
         viewIdentifier viewId: Int64,
         arguments args: Any?
     ) -> FlutterPlatformView {
-        return FLTCameraView(withFrame: frame, withRegistrar: registrar, withId: viewId, params: args)
+        return FLTCameraView(withFrame: frame, withRegistrar: registrar, withId: viewId, params: args, imageStorage: imageStorage)
     }
 }
 
@@ -37,10 +39,12 @@ class FLTCameraView: NSObject {
     
     private let cameraView: CameraView
     private let channel: FlutterMethodChannel
+    private let imageStorage: ImageStorageProtocol
 
-    init(withFrame frame: CGRect, withRegistrar registrar: FlutterPluginRegistrar, withId id: Int64, params: Any?) {
+    init(withFrame frame: CGRect, withRegistrar registrar: FlutterPluginRegistrar, withId id: Int64, params: Any?, imageStorage: ImageStorageProtocol) {
         self.cameraView = CameraView(frame: frame)
         self.channel = FlutterMethodChannel(name: "flutter_platform_camera.cameraView_\(id)", binaryMessenger: registrar.messenger())
+        self.imageStorage = imageStorage
         
         super.init()
         
@@ -95,6 +99,7 @@ extension FLTCameraView {
             let photoSettings = AVCapturePhotoSettings()
             
             let photoCaptureDelegate = PhotoCaptureDelegate(photoSettings) { photoData in
+                try? self.imageStorage.save(image: photoData)
                 resultCallback(FlutterStandardTypedData(bytes: photoData))
             } didFailure: {
                 resultCallback(FlutterError(code: "capture_photo", message: "Photo capture failed", details: nil))

@@ -1,8 +1,9 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:flutter_platform_camera/platform/camera.dart';
+import '../../../platform/camera.dart';
 
 class CameraScreen extends StatelessWidget {
   final _controller = PlaformCameraController();
@@ -31,15 +32,7 @@ class CameraScreen extends StatelessWidget {
                   children: [
                     _CaptureButton(
                       onPressed: () async {
-                        final file = await _controller.capturePhoto();
-
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => Scaffold(
-                                body: Image.memory(file!),
-                              ),
-                            ));
+                        await _controller.capturePhoto();
                       },
                     ),
                     Row(

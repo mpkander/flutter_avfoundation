@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ImageStorageProtocol {
+protocol ImageStorageProtocol: AnyObject {
     func getAllImages() throws -> [ImageDto]
     func save(image: Data) throws
     func delete(byIds ids: [String]) throws

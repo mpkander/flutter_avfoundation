@@ -12,3 +12,13 @@ struct ImageDto {
     let path: String
     let creationDate: Date
 }
+
+extension ImageDto {
+    func toDictionary() -> [String: Any] {
+        return [
+            "uuid": self.uuid,
+            "path": self.path,
+            "creationTimestamp": Int(self.creationDate.timeIntervalSince1970)
+        ]
+    }
+}

@@ -10,7 +10,7 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		4D1F170926CBCA9E00792B0C /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1F170826CBCA9E00792B0C /* Camera.swift */; };
-		4D29D1C526CFE58500A0FB35 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D29D1C426CFE58500A0FB35 /* Images.swift */; };
+		4D29D1C526CFE58500A0FB35 /* ImagesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D29D1C426CFE58500A0FB35 /* ImagesHandler.swift */; };
 		4DDA875426D381B900F2DB23 /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA875326D381B900F2DB23 /* ImageStorage.swift */; };
 		4DDA875726D3823500F2DB23 /* ImageDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DDA875626D3823500F2DB23 /* ImageDto.swift */; };
 		4DDE72EA26CD115B00EC166D /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DDE72E926CD115B00EC166D /* CameraView.swift */; };
@@ -38,7 +38,7 @@
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		4D1F170826CBCA9E00792B0C /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
-		4D29D1C426CFE58500A0FB35 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		4D29D1C426CFE58500A0FB35 /* ImagesHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesHandler.swift; sourceTree = "<group>"; };
 		4DDA875326D381B900F2DB23 /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
 		4DDA875626D3823500F2DB23 /* ImageDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDto.swift; sourceTree = "<group>"; };
 		4DDE72E926CD115B00EC166D /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
@@ -69,7 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				4D1F170826CBCA9E00792B0C /* Camera.swift */,
-				4D29D1C426CFE58500A0FB35 /* Images.swift */,
+				4D29D1C426CFE58500A0FB35 /* ImagesHandler.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -262,7 +262,7 @@
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				4DDA875426D381B900F2DB23 /* ImageStorage.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
-				4D29D1C526CFE58500A0FB35 /* Images.swift in Sources */,
+				4D29D1C526CFE58500A0FB35 /* ImagesHandler.swift in Sources */,
 				4D1F170926CBCA9E00792B0C /* Camera.swift in Sources */,
 				4DDA875726D3823500F2DB23 /* ImageDto.swift in Sources */,
 				4DDE72EA26CD115B00EC166D /* CameraView.swift in Sources */,

@@ -24,15 +24,22 @@ class ImageStoragePlatformImpl implements ImageStoragePlatform {
           _eventChannel.receiveBroadcastStream().map(_parseImageStorageResult);
 
   @override
-  Future<List<ImageDto>> get allImages => _methodChannel.invokeListMethod<>(method);
+  Future<List<ImageDto>> get allImages async =>
+      (await _methodChannel.invokeListMethod<Map>("getAllImages")).toImages();
+
+  @override
+  Future<void> deleteImages(List<String> uuids) {
+    // TODO: implement deleteImages
+    throw UnimplementedError();
+  }
+}
+
+extension on dynamic {
+  List<ImageDto> toImages() => _parseImageStorageResult(this);
 }
 
 List<ImageDto> _parseImageStorageResult(dynamic result) {
-  log("result: $result");
-
-  final listMapResult = result as List;
-
-  return listMapResult
+  return (result as List)
       .map((e) => ImageDto(
             uuid: e["uuid"],
             inMemoryPath: e["path"],

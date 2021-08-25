@@ -1,7 +1,10 @@
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_camera/core/features/camera/bloc.dart';
 
 import '../../../platform/camera.dart';
 
@@ -10,45 +13,64 @@ class CameraScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark,
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: SafeArea(
-          bottom: false,
-          child: Stack(
-            children: [
-              _buildCamera(context),
-              Positioned(
-                left: 30,
-                right: 30,
-                bottom: 40,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    _CaptureButton(
-                      onPressed: () async {
-                        await _controller.capturePhoto();
-                      },
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        _GalleryButton(),
-                        _FlipButton(
-                          onPressed: () => _controller.flipCamera(),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            ],
+    return BlocListener<CameraBloc, CameraState>(
+      listenWhen: (_, current) => current is CameraStateListenable,
+      listener: (_, state) {
+        if (state is CameraStateCapturePressed) {
+          _controller.capturePhoto();
+        }
+      },
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark,
+        ),
+        child: Scaffold(
+          backgroundColor: Colors.black,
+          body: SafeArea(
+            bottom: false,
+            child: Stack(
+              children: [
+                _buildCamera(context),
+                Positioned(
+                  left: 30,
+                  right: 30,
+                  bottom: 40,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      _CaptureButton(
+                        onPressed: () => context
+                            .read<CameraBloc>()
+                            .add(CameraEvent.capturePressed()),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          BlocBuilder<CameraBloc, CameraState>(
+                            buildWhen: (_, current) =>
+                                current is! CameraStateListenable,
+                            builder: (_, state) => _GalleryButton(
+                              imageProvider: state.photoEntity != null
+                                  ? FileImage(
+                                      File(state.photoEntity!.path),
+                                      scale: 0.1,
+                                    )
+                                  : null,
+                            ),
+                          ),
+                          _FlipButton(
+                            onPressed: () => _controller.flipCamera(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -98,15 +120,34 @@ class _CaptureButton extends StatelessWidget {
 
 class _GalleryButton extends StatelessWidget {
   static const double _size = 38;
+  static const double _innerSpacing = 1.5;
+  static const double _radius = 8;
+
+  final ImageProvider? imageProvider;
+
+  const _GalleryButton({
+    Key? key,
+    required this.imageProvider,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: _size,
       height: _size,
+      padding: const EdgeInsets.all(_innerSpacing),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(_radius),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(_radius - _innerSpacing),
+        child: imageProvider != null
+            ? Image(
+                image: imageProvider!,
+                fit: BoxFit.cover,
+              )
+            : const SizedBox.shrink(),
       ),
     );
   }

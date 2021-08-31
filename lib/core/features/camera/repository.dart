@@ -1,3 +1,4 @@
+
 import '../../../platform/image_storage/image_storage.dart';
 import '../../../platform/image_storage/model.dart';
 import '../../entities/photo.dart';
@@ -28,12 +29,4 @@ extension on List<ImageDto> {
           return element;
         }
       });
-}
-
-extension on ImageDto {
-  PhotoEntity toDomain() => PhotoEntity(
-        id: uuid,
-        path: inMemoryPath,
-        creationDate: creationDate,
-      );
 }

@@ -1,12 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_camera/core/features/camera/bloc.dart';
 
 import '../../../platform/camera.dart';
+import '../../navigation/routes.dart';
+import 'bloc.dart';
 
 class CameraScreen extends StatelessWidget {
   final _controller = PlaformCameraController();
@@ -55,7 +54,7 @@ class CameraScreen extends StatelessWidget {
                             builder: (_, state) => _GalleryButton(
                               imageProvider: state.photoEntity != null
                                   ? FileImage(
-                                      File(state.photoEntity!.path),
+                                      state.photoEntity!.file,
                                       scale: 0.1,
                                     )
                                   : null,
@@ -132,22 +131,25 @@ class _GalleryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: _size,
-      height: _size,
-      padding: const EdgeInsets.all(_innerSpacing),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(_radius),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(_radius - _innerSpacing),
-        child: imageProvider != null
-            ? Image(
-                image: imageProvider!,
-                fit: BoxFit.cover,
-              )
-            : const SizedBox.shrink(),
+    return GestureDetector(
+      onTap: () => Navigator.push(context, PageRoutes.gallery()),
+      child: Container(
+        width: _size,
+        height: _size,
+        padding: const EdgeInsets.all(_innerSpacing),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(_radius),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(_radius - _innerSpacing),
+          child: imageProvider != null
+              ? Image(
+                  image: imageProvider!,
+                  fit: BoxFit.cover,
+                )
+              : const SizedBox.shrink(),
+        ),
       ),
     );
   }
